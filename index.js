@@ -53,12 +53,28 @@ async function run() {
         });
 
 
+
         // Product API
         app.post('/api/add/product', async (req, res) => {
             const product = req.body;
             const result = await productCollection.insertOne(product);
             res.send(result);
         });
+
+        app.get('/api/all/product', async (req, res) => {
+            const query = {}
+            const cursor = productCollection.find(query);
+            const result = await cursor.toArray();
+            res.send(result);
+        });
+
+        app.get('/api/product/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = ({ "category_id": id });
+            const result = await productCollection.find(query).toArray()
+            res.send(result);
+        });
+
 
 
         // User API
