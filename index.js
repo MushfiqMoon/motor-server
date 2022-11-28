@@ -41,6 +41,7 @@ async function run() {
         // Collections 
         const motoCollection = client.db('motor').collection('category')
         const userCollection = client.db('motor').collection('user')
+        const productCollection = client.db('motor').collection('product')
 
 
         // Category API
@@ -50,14 +51,22 @@ async function run() {
             const result = await cursor.toArray();
             res.send(result);
         });
-    
+
+
+        // Product API
+        app.post('/api/add/product', async (req, res) => {
+            const product = req.body;
+            const result = await productCollection.insertOne(product);
+            res.send(result);
+        });
+
 
         // User API
         app.get('/api/user', async (req, res) => {
             const query = {}
             const cursor = userCollection.find(query);
             const result = await cursor.toArray();
-            res.send(result); 
+            res.send(result);
         });
 
         app.post('/api/user', async (req, res) => {
@@ -75,9 +84,7 @@ async function run() {
             const updateDoc = {
                 $set: user,
             }
-            console.log(filter, option, updateDoc)
             const result = await userCollection.updateOne(filter, updateDoc, option);
-            console.log(result)
             res.send(result);
 
         });
