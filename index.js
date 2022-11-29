@@ -112,6 +112,15 @@ async function run() {
             res.send(result);
         });
 
+        app.get('/api/order/:id', async (req, res) => {
+            const id = req.params.id;
+
+            const query = ({ "buyer_email": id });
+            console.log(query)
+            const result = await orderCollection.find(query).toArray()
+            res.send(result);
+        });
+
         // app.get('/api/order/', async (req, res) => {
 
         //     let query = {}
