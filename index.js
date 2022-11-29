@@ -42,6 +42,7 @@ async function run() {
         const motoCollection = client.db('motor').collection('category')
         const userCollection = client.db('motor').collection('user')
         const productCollection = client.db('motor').collection('product')
+        const orderCollection = client.db('motor').collection('order')
 
 
         // Category API
@@ -68,8 +69,8 @@ async function run() {
             res.send(result);
         });
 
-        app.get('/api/product/:id', async (req, res) => {
-            const id = req.params.id;
+        app.get('/api/product/:catId', async (req, res) => {
+            const id = req.params.catId;
             const query = ({ "category_id": id });
             const result = await productCollection.find(query).toArray()
             res.send(result);
@@ -88,6 +89,13 @@ async function run() {
             res.send(result);
         });
 
+        app.get('/api/product/single/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const result = await productCollection.findOne(query);
+            res.send(result);
+        });
+
         app.delete('/api/product/:id', async (req, res) => {
             const id = req.params.id;
             const query = { _id: ObjectId(id) };
@@ -95,6 +103,27 @@ async function run() {
             res.send(result);
         });
 
+
+
+        // Order API
+        app.post('/api/add/order', async (req, res) => {
+            const order = req.body;
+            const result = await orderCollection.insertOne(order);
+            res.send(result);
+        });
+
+        // app.get('/api/order/', async (req, res) => {
+
+        //     let query = {}
+        //     if (req.query.email) {
+        //         query = {
+        //             seller_email: req.query.email
+        //         }
+        //     }
+        //     const cursor = productCollection.find(query);
+        //     const result = await cursor.toArray();
+        //     res.send(result);
+        // });
 
 
         // User API
