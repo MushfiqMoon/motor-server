@@ -62,6 +62,15 @@ async function run() {
             res.send(result);
         });
 
+        app.post('/api/update/product/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const update = { $set: { advertise: true } };
+            const options = {};
+            const result = await productCollection.updateOne(query, update, options);
+            res.send(result);
+        });
+
         app.get('/api/all/product', async (req, res) => {
             const query = {}
             const cursor = productCollection.find(query);
@@ -114,25 +123,11 @@ async function run() {
 
         app.get('/api/order/:id', async (req, res) => {
             const id = req.params.id;
-
             const query = ({ "buyer_email": id });
             console.log(query)
             const result = await orderCollection.find(query).toArray()
             res.send(result);
         });
-
-        // app.get('/api/order/', async (req, res) => {
-
-        //     let query = {}
-        //     if (req.query.email) {
-        //         query = {
-        //             seller_email: req.query.email
-        //         }
-        //     }
-        //     const cursor = productCollection.find(query);
-        //     const result = await cursor.toArray();
-        //     res.send(result);
-        // });
 
 
         // User API
