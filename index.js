@@ -79,6 +79,7 @@ async function run() {
             const result = await productCollection.updateOne(query, update, options);
             res.send(result);
         });
+
         app.post('/api/product/wishlist/:id', async (req, res) => {
             const id = req.params.id;
             const query = { _id: ObjectId(id) };
@@ -147,7 +148,15 @@ async function run() {
         });
 
 
-        // User API
+        // User API 
+
+        app.delete('/api/user/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const result = await userCollection.deleteOne(query);
+            res.send(result);
+        });
+
         app.get('/api/user', async (req, res) => {
             const query = {}
             const cursor = userCollection.find(query);
