@@ -62,10 +62,27 @@ async function run() {
             res.send(result);
         });
 
-        app.post('/api/update/product/:id', async (req, res) => {
+        app.post('/api/product/update/:id', async (req, res) => {
             const id = req.params.id;
             const query = { _id: ObjectId(id) };
             const update = { $set: { advertise: true } };
+            const options = {};
+            const result = await productCollection.updateOne(query, update, options);
+            res.send(result);
+        });
+
+        app.post('/api/product/report/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const update = { $set: { report: true } };
+            const options = {};
+            const result = await productCollection.updateOne(query, update, options);
+            res.send(result);
+        });
+        app.post('/api/product/wishlist/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const update = { $set: { wishlist: true } };
             const options = {};
             const result = await productCollection.updateOne(query, update, options);
             res.send(result);
